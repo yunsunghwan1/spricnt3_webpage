@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>::: 인구와 발전소 종류 분석 :::</title>
+        <!-- Custom fonts for this template-->
+    <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css"> -->
+    <link href="{% static 'mainapp/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <!-- <link href="css/sb-admin-2.min.css" rel="stylesheet"> -->
+    <link href="{% static 'mainapp/css/sb-admin-2.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="text/javascript" 
+            src = "{% static 'nonmodelapp/js/jquery-3.6.4.min.js' %}">        
+    </script>
+    <!--  날짜 슬라이더  -->
+    <link rel="stylesheet" href="{% static 'mainapp/css/rSlider.min.css' %}" >
+    <script src="{% static 'mainapp/js/rSlider.min.js' %} "></script>
+    <script type="text/javascript">        
+        // jquery 비동기 방식의 링크 처리 (페이지 전환 안됨)
+        function changeLoadView(url){
+            {% comment %} alert(url) {% endcomment %}
+            {% comment %} alert(url) {% endcomment %}
+            $("#load_view_data").html("<img src='"+ url +"' style='display: block; width: 100%; height: 100%;'>");
+        }
+    </script>
+    <style>
+        .chart-area {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-area > div {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        .chart-area iframe {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion col-2" id="accordionSidebar">
+        
+            <!-- <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"> -->
+                <br/>
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="http://127.0.0.1:8000/">
+                    <!-- 이미지 각도 변경 -->
+                    <div class="sidebar-brand-icon rotate-n-15">
+                        <!-- 이미지 추가 -->
+                        <i class="fas fa-laugh-wink"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">스프린트 3</div>
+                </a>
+    
+                <!-- 줄 -->
+                <hr class="sidebar-divider my-0">
+    
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="http://127.0.0.1:8000/">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>index 페이지로 돌아가기</span></a>
+                </li>
+    
+                <!-- 줄 -->
+                <hr class="sidebar-divider">
+    
+    
+                <!-- Nav Item - Pages Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>지역과 전력 사용 분석</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/Population_consumption" style="font-size: 12px;">지역과 전력 소비량 분석</a>
+                        </div>
+                    </div>
+                </li>
+    
+                <!-- Nav Item - Utilities Collapse Menu -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                        aria-expanded="true" aria-controls="collapseUtilities">
+                        <i class="fas fa-fw fa-wrench"></i>
+                        <span>지역과 발전 분석</span>
+                    </a>
+                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <a class="collapse-item" href="/Population_PowerPlant" style="font-size: 12px;">지역과 발전 생산량 분석</a>
+                        </div>
+                    </div>
+                </li>
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+        </ul>
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        <!-- Page Heading -->
+                <br/>
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">지역과 전력발전 분석</h1>
+                </div>
+                <!-- Content Wrapper -->
+
+                    <!-- Main Content -->
+                    <div id="content">
+                        <!-- Begin Page Content -->
+                        <div class="row">
+                            <!-- <div class="col-xl-8 col-lg-7"> -->
+                            <div class="col-xl-6 col-lg-7 ">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">지도 시각화
+                                        </h6>
+                                        <div class="dropdown no-arrow">
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <div class="chart-area">
+                                            <div style="height: 100%;">
+                                                <div class="chart-container">{{ map_html | safe }}</div>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                      
+                                </div>
+                            </div>
+
+                            <!-- Pie Chart -->
+                            <!-- <div class="col-xl-4 col-lg-5"> -->
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="card shadow mb-4">
+                                    <!-- Card Header - Dropdown -->
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary"></h6>
+                                        <div class="dropdown no-arrow">
+                                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                                aria-labelledby="dropdownMenuLink">
+                                                {% comment %} ################################################################################################# {% endcomment %}
+                                                
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_1}}')">인구수/ 재생에너지 생산량</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_2}}')">지역별 재생에너지 설비</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_3}}')">지역별 면적</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_4}}')">지역별 발전량 </a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_5}}')">지역별 발전 수</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_6}}')">면적과 발전량 산점도</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_7}}')">히트맵(인구 수, 면적, 설비용량)</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_8}}')">인구 발전량 산점도</a>
+                                                <a class="dropdown-item"  onclick="changeLoadView('{{picture_9}}')">인구 수/ 재생에너지 생산 시군구</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card Body -->
+                                    <div class="card-body">
+                                        <!-- 차트 그리기 ####################################################################################-->
+                                        <div class="chart-area ">
+                                            <div style="display: block; text-align: center;" id="load_view_data">
+                                                {% comment %} <img src="{% static 'mainapp/data_graph_img/fig.png' %}" id="load_view_data" style="display: block; width: 100%; height: 100%;"> {% endcomment %}
+                                            </div>                                      
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End of Footer -->
+
+                </div>
+
+            </div>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+
+
+        <!-- Bootstrap core JavaScript-->
+        <script type="text/javascript"
+        src="{% static 'mainapp/vendor/jquery/jquery.min.js' %}">
+        </script>
+        <script type="text/javascript"
+                src="{% static 'mainapp/vendor/bootstrap/js/bootstrap.bundle.min.js' %}">
+        </script>
+        <!-- Core plugin JavaScript-->
+        <script src="{% static 'mainapp/vendor/jquery-easing/jquery.easing.min.js' %}"> </script>
+        <!-- Custom scripts for all pages-->
+        <script  src="{% static 'mainapp/js/sb-admin-2.min.js' %}"> </script>
+        <!-- Page level plugins -->
+        <!-- Page level custom scripts -->
+        <!-- 날짜 슬라이더 -->
+</body>
+</html>
